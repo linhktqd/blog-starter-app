@@ -20,7 +20,7 @@ export function getPostBySlug(slug: string) {
   const basePath = isProd ? '/blog-starter-app' : '';
   let coverImage = data.coverImage;
   if (coverImage && !coverImage.startsWith('http')) {
-    coverImage = `${basePath}${coverImage.startsWith('/') ? '' : '/'}${coverImage}`;
+    coverImage = `${coverImage.startsWith('/') ? '' : '/'}${coverImage}`;
   }
   return { ...data, coverImage, slug: realSlug, content } as Post;
 }

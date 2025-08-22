@@ -15,8 +15,16 @@ export function getPostBySlug(slug: string) {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
-  return { ...data, slug: realSlug, content } as Post;
+  // Prepend basePath to coverImage if in production
+  const isProd = process.env.NODE_ENV === 'production';
+  const basePath = isProd ? '/blog-starter-app' : '';
+  let coverImage = data.coverImage;
+  if (coverImage && !coverImage.startsWith('http')) {
+    coverImage = `${basePath}${coverImage.startsWith('/') ? '' : '/'}${coverImage}`;
+  }
+  return { ...data, coverImage, slug: realSlug, content } as Post;
 }
+
 
 export function getAllPosts(): Post[] {
   const slugs = getPostSlugs();
